@@ -204,38 +204,39 @@ function getZero (num) {
      function postData(form) {
          form.addEventListener('submit', (event) => {
                 event.preventDefault();
-
+                
                 const statusMessage = document.createElement('img');
                 statusMessage.src = message.loading;
                 statusMessage.style.cssText = `
-                    display: block;
-                    margin: 0 auto;
+                display: block;
+                margin: 0 auto;
                 `;
                 form.insertAdjacentElement('afterend', statusMessage);
-
-                const request = new XMLHttpRequest();
-                request.open('POST', 'server.php');
-
-                request.setRequestHeader('Content-type', 'application/json');
+                
                 const formData = new FormData(form); // Всегда в верстке проверять name в фоормах 
-                const object = {};
-                formData.forEach((value, key) => {
-                    object[key] = value;
-                });
-
-                const json = JSON.stringify(object);
-
-                request.send(json);
-                request.addEventListener('load', () => {
-                    if (request.status === 200) {
-                        console.log(request.response);
+                fetch('server.php', {
+                    method: 'POST',
+                    headers: {
+                        'Content-type': 'application/json'
+                    },
+                    body: JSON.stringify(formData)
+                    }).then((data) => {
+                        data.text();
+                    })
+                    .then((formData) => {
+                        console.log(formData);
                         showThanksModal(message.success);
                         form.reset();
-                            statusMessage.remove();
-                    } else {
+                        statusMessage.remove();
+                    }).catch(() => {
                         showThanksModal(message.failure);
-                    }
-                });
+                    }).finally(() => {
+                        form.reset();
+                    });
+                    // const object = {};
+                    // formData.forEach((value, key) => {
+                    //     object[key] = value;
+                    // });
          });
      }
 
@@ -260,4 +261,16 @@ function getZero (num) {
              closeModal();
          }, 4000);
      }
+
+
+// Fetch 
+    //  fetch('https://jsonplaceholder.typicode.com/posts', {
+    //      method: "POST",
+    //      body: JSON.stringify({name: 'ALEX'}),
+    //      headers: {
+    //          'Content-type': 'application/json'
+    //      }
+    //  })
+    //     .then(response => response.json())
+    //     .then(json => console.log(json));
 });
