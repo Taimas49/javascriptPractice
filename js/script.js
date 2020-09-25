@@ -294,6 +294,49 @@ function getZero (num) {
              closeModal();
          }, 4000);
      }
+
+
+     //slider
+ 
+
+
+    const offerSlider = document.querySelector('.offer__slider');
+    const offerSliderCounter = document.querySelector('.offer__slider-counter');
+    const sliderPrev = offerSliderCounter.querySelector('.offer__slider-prev');
+    const sliderNext = offerSliderCounter.querySelector('.offer__slider-next');
+    const slideWrapper = document.querySelector('.offer__slider-wrapper');
+    let slideIndex = 1;
+    const slides = document.querySelectorAll('.offer__slide')
+
+    showSlides(slideIndex);
+
+     function showSlides (n) {
+         if (n > slides.length) {
+            slideIndex = 1;
+         }
+         if (n < 1) {
+            slideIndex = slides.length;
+         }
+
+        slides.forEach(item => {
+            item.style.display = 'none';
+        });
+
+        slides[slideIndex - 1].style.display = 'block';
+    }
+     function plusSlides(n) {
+         showSlides(slideIndex += n);
+     }
+
+     sliderPrev.addEventListener('click', () => {
+        plusSlides(-1);
+     })
+     sliderNext.addEventListener('click', () => {
+         plusSlides(+1);
+     })
+
+
+
     //  fetch(' http://localhost:3000/menu')
     //  .then(request => request.json())
     //  .then(request => console.log(request))
