@@ -145,7 +145,7 @@ function getZero (num) {
 
     axios.get('http://localhost:3000/menu')
     .then(data => {
-        console.log(data)
+        console.log(data);
         data.data.forEach(({img, altimg, title, descr, price}) => {
             new MenuCard(img, altimg, title, descr, price, '.menu .container').render();
         });
@@ -329,12 +329,17 @@ function getZero (num) {
         slides.forEach((slide) => {
             slide.style.width = width;
         });
+
+        function replaceWidth (str) {
+            return +str.replace(/\D/ig, '');
+        }
+
     
         sliderNext.addEventListener('click', () => {
-            if (offset == +width.slice(0, width.length - 2) * (slides.length - 1)) { //'500px'
+            if (offset == replaceWidth(width) * (slides.length - 1)) { //'500px'
                 offset = 0;
             } else {
-                offset +=+ width.slice(0, width.length - 2);
+                offset += replaceWidth(width);
             }
             
             slidesField.style.transform = `translateX(${-offset}px)`;
@@ -354,10 +359,10 @@ function getZero (num) {
         });
         sliderPrev.addEventListener('click', () => {
             if ( offset == 0) { //'500px'
-            offset = +width.slice(0, width.length - 2) * (slides.length - 1);
+            offset = replaceWidth(width) * (slides.length - 1);
            
             } else {
-                offset -=+ width.slice(0, width.length - 2);
+                offset -= replaceWidth(width);
             }
             
             slidesField.style.transform = `translateX(${-offset}px)`;
@@ -379,6 +384,7 @@ function getZero (num) {
         });
         const dots = []; // создаем пустой массив для точек
         offerSlider.style.cssText = 'position: relative';
+
         function createCarousel () {
             const carousel = document.createElement('div');
             carousel.classList.add('carousel-indicators');
@@ -403,7 +409,7 @@ function getZero (num) {
             dot.addEventListener('click', (e) => {
                 const slideTo = e.target.getAttribute('data-slide-to');
                 slideIndex = slideTo;
-                offset = +width.slice(0, width.length - 2) * (slideTo - 1);
+                offset = replaceWidth(width) * (slideTo - 1);
                 slidesField.style.transform = `translateX(${-offset}px)`;
                 if (slides.length < 10) {
                     current.textContent = `0${slideIndex}`;
@@ -417,6 +423,9 @@ function getZero (num) {
             });
         });
 
+
+ 
+        
     // showSlides(slideIndex);
     //  function showSlides (n) {
     //      if (n > slides.length) {
