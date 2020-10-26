@@ -1,0 +1,3 @@
+# javascriptPractice
+
+Vanilla js project 
